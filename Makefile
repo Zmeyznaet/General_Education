@@ -1,5 +1,5 @@
-CXX		  := g++
-CXX_FLAGS := -Wall -Wextra -std=c++17 -ggdb
+CXX		  := clang
+CXX_FLAGS := -Wall -Wextra -pedantic -Werror -lstdc++ -std=c++17 -ggdb
 
 BIN		:= bin
 SRC		:= src
@@ -7,7 +7,7 @@ INCLUDE	:= include
 LIB		:= lib
 
 LIBRARIES	:=
-EXECUTABLE	:= main
+EXECUTABLE	:= develop
 
 
 all: $(BIN)/$(EXECUTABLE)
