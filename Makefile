@@ -1,23 +1,16 @@
-CXX		  := clang
+TARGET := develop
+CXX := clang
 CXX_FLAGS := -Wall -Wextra -pedantic -Werror -lstdc++ -std=c++17 -ggdb
 
-BIN		:= bin
-SRC		:= src
-INCLUDE	:= include
-LIB		:= lib
+BIN := bin
+SRC := src
+INCLUDE := include
+LIB := lib
 
-LIBRARIES	:=
-EXECUTABLE	:= develop
+all: $(BIN)/$(TARGET)
 
+clean: $(BIN)/$(TARGET)
+	rm -rf $(BIN)/$(TARGET)
 
-all: $(BIN)/$(EXECUTABLE)
-
-run: clean all
-	clear
-	./$(BIN)/$(EXECUTABLE)
-
-$(BIN)/$(EXECUTABLE): $(SRC)/*.cpp
-	$(CXX) $(CXX_FLAGS) -I$(INCLUDE) -L$(LIB) $^ -o $@ $(LIBRARIES)
-
-clean:
-	-rm $(BIN)/*
+$(BIN)/$(TARGET): $(SRC)/main.cpp
+	$(CXX) $(CXX_FLAGS) -I $(INCLUDE) -o $(BIN)/$(TARGET) $(SRC)/main.cpp
