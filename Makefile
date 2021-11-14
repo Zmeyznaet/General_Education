@@ -1,16 +1,21 @@
+.PHONY:= all clean
+
 TARGET := develop
-CXX := clang
-CXX_FLAGS := -Wall -Wextra -pedantic -Werror -lstdc++ -std=c++17 -ggdb
+CXX := clang++
+CXX_FLAGS := -Wall -Wextra -pedantic -Werror -std=c++17 -ggdb
 
 BIN := bin
 SRC := src
 INCLUDE := include
-LIB := lib
+OBJ := obj
 
 all: $(BIN)/$(TARGET)
 
-clean: $(BIN)/$(TARGET)
-	rm -rf $(BIN)/$(TARGET)
+clean:
+	rm -rf $(BIN)/$(TARGET) $(OBJ)/*
 
-$(BIN)/$(TARGET): $(SRC)/main.cpp
-	$(CXX) $(CXX_FLAGS) -I $(INCLUDE) -o $(BIN)/$(TARGET) $(SRC)/main.cpp
+$(OBJ)/main.o: $(SRC)/main.cpp
+	$(CXX) $(CXX_FLAGS) -c -I $(INCLUDE) -o $@ $<
+
+$(BIN)/$(TARGET): $(OBJ)/main.o
+	$(CXX) $(CXX_FLAGS) -o $@ $<
