@@ -1,4 +1,1 @@
-# HelloWorld
-First_project
-First step
-Second step
+# General_Education
