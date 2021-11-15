@@ -21,4 +21,5 @@ int main() {
     std:: cout << "The sum of integers is: " << int_sum << '\n';
     int average = int_sum/string.length();
     std:: cout << "An average is: " << average << '\n';
+
 }
