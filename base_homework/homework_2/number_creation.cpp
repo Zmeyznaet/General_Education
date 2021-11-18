@@ -14,13 +14,12 @@ int main() {
     }
     if (quantity < 0) {
         std::cerr << __FILE__ << ':' << __LINE__ << ':' <<
-            " Quantity of numbers is less than 0." 
-                "Try again" << '\n';
+            " Quantity of numbers is less than 0. Try again" << '\n';
         return 1;
     }
     std::cout << __FILE__ << ':' << __LINE__ <<
         ':' << " Enter check numbers" << '\n';
-    uint32_t number{};
+    long long number{};
     std::string string_result_number{""};
     for (int i=1; i <= quantity; ++i) {
         if (!(std::cin >> number)) {
@@ -39,11 +38,17 @@ int main() {
             string_result_number += std::to_string(number);
             continue;
         }
-        string_result_number = std::to_string(number) + 
-            string_result_number;
+        string_result_number = std::to_string(number) + string_result_number;
     }
-    const uint32_t int_result_number = std::stoi(string_result_number);
-    if (int_result_number%3 == 0) {
+    long long long_result_number;
+    try {
+        long_result_number = std::stoll(string_result_number);
+    } catch (std::out_of_range) {
+        std::cout <<  __FILE__ << ':' << __LINE__ << ':' <<
+                " Summary number is out of max range. Try again" << '\n';
+        return 1;
+    }
+    if (long_result_number%3 == 0) {
         std::cout << __FILE__ << ':' << __LINE__ << ':' <<
             " Yes" << '\n';
         return 0;
