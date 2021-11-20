@@ -1,70 +1,38 @@
 #include <iostream>
 #include <cmath>
+#include "log.h"
 
 int main() {
+    const std::string k_tag {"main.cpp: "};
     int a{};
-    std::cout << __FILE__ << ':' << __LINE__ <<
-        ':' << " To start solution of the quadratic equation, enter coefficients" << '\n';
-    std::cout << __FILE__ << ':' << __LINE__ <<
-        ':' << " Enter 'a' coefficient:" << '\n';
-    if (!(std::cin >> a)) {
-        std::cin.clear();
-        std::cin.ignore(10000, '\n');
-        std::cerr << __FILE__ << ':' << __LINE__ << ':' <<
-            " Something went wrong. Try again" << '\n';
-        return 1;
-    }
-    if (a < 1) {
-        std::cerr << __FILE__ << ':' << __LINE__ << ':' <<
-            " 'a' coefficient is less than 0. Try again" << '\n';
+    log_info(k_tag + "To start solution of the quadratic equation, enter coefficients");
+    log_info(k_tag + "Enter 'a' coefficient:");
+    console_read(a);
+    if (a == 0) {
+        log_error(k_tag + "'a' coefficient is less than 0. Try again");
         return 1;
     }
     int b{};
-    std::cout << __FILE__ << ':' << __LINE__ <<
-        ':' << " To start solution of the quadratic equation, enter coefficients" << '\n';
-    std::cout << __FILE__ << ':' << __LINE__ <<
-        ':' << " Enter 'b' coefficient:" << '\n';
-    if (!(std::cin >> b)) {
-        std::cin.clear();
-        std::cin.ignore(10000, '\n');
-        std::cerr << __FILE__ << ':' << __LINE__ << ':' <<
-            " Something went wrong. Try again" << '\n';
-        return 1;
-    }
+    log_info(k_tag + "Enter 'b' coefficient:");
+    console_read(b);
     int c{};
-    std::cout << __FILE__ << ':' << __LINE__ <<
-        ':' << " To start solution of the quadratic equation, enter coefficients" << '\n';
-    std::cout << __FILE__ << ':' << __LINE__ <<
-        ':' << " Enter free member 'c':" << '\n';
-    if (!(std::cin >> c)) {
-        std::cin.clear();
-        std::cin.ignore(10000, '\n');
-        std::cerr << __FILE__ << ':' << __LINE__ << ':' <<
-            " Something went wrong. Try again" << '\n';
-        return 1;
-    }
+    log_info(k_tag + "Enter free member 'c':");
+    console_read(c);
     long long discriminant = (b*b) - (4*a*c);
-    std::cout << __FILE__ << ':' << __LINE__ <<
-        ':' << " Discriminant is: " << discriminant << '\n';
+    log_debug(k_tag + "Discriminant is: ", discriminant);
     if (discriminant < 0) {
-        std::cout << __FILE__ << ':' << __LINE__ <<
-            ':' << " Equation has no real solutions" << '\n';
+        log_info(k_tag + "Equation has no real solutions");
         return 0;
     }
     if (discriminant == 0) {
         long long first_root = (-b)/(2*a);
-        std::cout << __FILE__ << ':' << __LINE__ <<
-            ':' << " Equation has only one root: " << '\n';
-        std::cout << __FILE__ << ':' << __LINE__ <<
-            ':' << " x1 = " << first_root << '\n';
+        log_info(k_tag + "Equation has only one root:");
+        log_info(k_tag + "x1 = ", first_root);
         return 0;
     }
-    std::cout << __FILE__ << ':' << __LINE__ <<
-        ':' << " Equation has two roots: " << '\n';
+    log_info(k_tag + "Equation has two roots:");
     long long first_root = ((-b)+(std::sqrt(discriminant)))/(2*a);
-    std::cout << __FILE__ << ':' << __LINE__ <<
-        ':' << " x1 = " << first_root << "  ";
+    log_info(k_tag + "x1 = ", first_root);
     long long second_root = ((-b)-(std::sqrt(discriminant)))/(2*a);
-    std::cout << __FILE__ << ':' << __LINE__ <<
-        ':' << " x2 = " << second_root << '\n';
+    log_info(k_tag + "x2 = ", second_root);
 }
