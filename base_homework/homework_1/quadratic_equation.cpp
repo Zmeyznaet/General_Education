@@ -3,7 +3,7 @@
 #include "log.h"
 
 int main() {
-    const std::string k_tag {"main.cpp: "};
+    const std::string k_tag {__FILE__ ": "};
     int a{};
     log_info(k_tag + "To start solution of the quadratic equation, enter coefficients");
     log_info(k_tag + "Enter 'a' coefficient:");
