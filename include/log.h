@@ -89,7 +89,7 @@ template <typename T>
 inline int console_read (T& value) noexcept {
     if (!(std::cin >> value)) {
         std::cin.clear();
-        std::cin.ignore(10000, '\n');
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
         std::cerr << "Something went wrong. Try again" << '\n';
         return 1;
     }
@@ -104,7 +104,7 @@ inline int console_read (T* value) noexcept {
     }
     if (!(std::cin >> *value)) {
         std::cin.clear();
-        std::cin.ignore(10000, '\n');
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
         std::cerr << "Something went wrong. Try again" << '\n';
         return 1;
     }
