@@ -2,10 +2,7 @@
 #include <iostream>
 
 inline void log_info (const std::string message) noexcept {
-    for (auto iterator = message.begin(); iterator < message.end(); ++iterator) {
-        std::cout << *iterator;
-    }
-    std::cout << '\n';
+        std::cout << message << '\n';
 }
 
 template <typename T>
