@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <limits>
 
 inline void log_info (const std::string message) noexcept {
         std::cout << message << '\n';
