@@ -1,16 +1,26 @@
 #include <iostream>
 #include <array>
-#include <limits>
 #include <cmath>
+#include <functional>
 #include "log.h"
 
+template <typename T>
+static bool greater_comparator (T first_value, T second_value) noexcept {
+	return first_value > second_value;
+}
+
+template <typename T>
+static bool less_comparator (T first_value, T second_value) noexcept {
+	return first_value < second_value;
+}
+
 template <size_t N>
-static void sort(std::array<uint32_t,N> & array) {
+static void sort(std::array<uint32_t,N> & array, std::function<bool(char,char)> comparator) noexcept {
 	//selection sort
 	for (size_t i=0; i < array.size(); ++i) {
 		size_t j=i;
 		for (size_t k=i; k < array.size(); ++k) {
-			if (array.at(j) < array.at(k)) {
+			if (comparator(array.at(j),array.at(k))) {
 				j = k;
 			}
 		}
@@ -19,13 +29,13 @@ static void sort(std::array<uint32_t,N> & array) {
 }
 
 template <size_t N>
-static void sort(std::array<double,N> & array) {
+static void sort(std::array<double,N> & array, std::function<bool(char,char)> lambda) noexcept{
 	//bubble sorting
 	for (size_t i=0; i < array.size(); ++i) {
 		for (size_t k=i; k < array.size(); ++k) {
 			bool is_values_equal = std::fabs(array.at(i)-array.at(k))
 				< std::numeric_limits<double>::epsilon();
-			if (!is_values_equal && array.at(i) < array.at(k)) {
+			if (!is_values_equal && lambda(array.at(i),array.at(k))) {
 				std::swap(array.at(i),array.at(k));
 			}
 		}
@@ -33,15 +43,11 @@ static void sort(std::array<double,N> & array) {
 }
 
 template <size_t N>
-static void sort_symbols(std::array<char,N> & char_array
-		,std::array<char,N> & sorted_char_array
-		,const char& lower_threshold
-		,const char& upper_threshold) {
-	size_t sort_index{};
+static void sort_char_symbols(std::array<char,N> & char_array
+	,const char& lower_threshold
+	,const char& upper_threshold) noexcept {
+	//selection sort
 	for (size_t i=0; i < char_array.size(); ++i) {
-		if (char_array.at(i) < lower_threshold || char_array.at(i) > upper_threshold) {
-			continue;
-		}
 		size_t j=i;
 		for (size_t k=i; k < char_array.size(); ++k) {
 			if (char_array.at(k) < lower_threshold || char_array.at(k) > upper_threshold) {
@@ -51,17 +57,15 @@ static void sort_symbols(std::array<char,N> & char_array
 				j = k;
 			}
 		}
-		sorted_char_array.at(sort_index++) = char_array.at(j);
 		std::swap(char_array.at(i), char_array.at(j));
 	}
 }
 
 template <size_t N>
-static void sort(std::array<char,N> & char_array
-	,std::array<char,N> & sorted_char_array) {
-	sort_symbols(char_array, sorted_char_array, 'A', 'Z');
-	sort_symbols(char_array, sorted_char_array, 'a', 'z');
-	sort_symbols(char_array, sorted_char_array, '0', '9');
+static void sort(std::array<char,N> & char_array) noexcept {
+	sort_char_symbols(char_array, 'A', 'Z');
+	sort_char_symbols(char_array, 'a', 'z');
+	sort_char_symbols(char_array, '0', '9');
 }
 
 template <typename T, size_t N>
@@ -81,7 +85,7 @@ int main() {
 	for (size_t index=0; index < uint_array.size(); ++index) {
 		console_read(uint_array.at(index));
 	}
-	sort(uint_array);
+	sort(uint_array, greater_comparator<char>);
 	log_array(uint_array);
 
 	//double
@@ -90,18 +94,28 @@ int main() {
 	for (size_t index=0; index < double_array.size(); ++index) {
 		console_read(double_array.at(index));
 	}
-	sort(double_array);
+	sort(double_array, [](char first_elem, char second_elem){return first_elem > second_elem;});
 	log_array(double_array);
 	std::cout << '\n';
 
 	//char
 	std::array<char,k_size> char_array;
 	std::cout << "Enter " << k_size << " char symbols" << '\n';
-	for (size_t index=0; index < char_array.size(); ++index) {
-		console_read(char_array.at(index));
+	for (size_t i=0; i < char_array.size(); ++i) {
+		char tmp;
+		console_read(tmp);
+		if (tmp < '0' || tmp > 'z') {
+			continue;
+		}
+		if (tmp > '9' && tmp < 'A') {
+			continue;
+		}
+		if (tmp > 'Z' && tmp < 'a') {
+			continue;
+		}
+		char_array.at(i) = tmp;
 	}
-	std::array<char,k_size> sorted_array;
-	sort(char_array,sorted_array);
-	log_array(sorted_array);
+	sort(char_array);
+	log_array(char_array);
 	return 0;
 }
